@@ -33,6 +33,10 @@ app.get('/', (req, res) => {
     res.send("Genius Car Services Home")
 })
 
+app.get('/hero', (req, res) => {
+    res.send("Hero meets Hero")
+})
+
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.clafk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
