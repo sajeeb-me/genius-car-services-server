@@ -48,12 +48,28 @@ async function run() {
 
 
         app.get('/services', async (req, res) => {
+            const page = parseInt(req.query.page);
+            const count = parseInt(req.query.count);
             const query = {}
             const cursor = serviceCollection.find(query)
-            const services = await cursor.toArray()
+            let services = '';
+            if (page || count) {
+                services = await cursor.skip(page * count).limit(count).toArray()
+                // services = await cursor.toArray()
+            }
+            else {
+                services = await cursor.toArray()
+            }
             // console.log(result)
             res.send(services)
         })
+
+        // service count
+        app.get('/services/count', async (req, res) => {
+            const count = await serviceCollection.estimatedDocumentCount()
+            res.send({ count })
+        })
+
         app.get('/service/:id', async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) }
